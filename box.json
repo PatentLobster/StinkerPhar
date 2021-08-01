@@ -1,0 +1,7 @@
+
+{
+  "files": ["index.php"],
+  "main": "index.php",
+  "output": "example.phar",
+  "stub": true
+}
