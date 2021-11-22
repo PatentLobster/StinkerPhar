@@ -113,7 +113,7 @@ class TinkerCommand
             }
 		}
 
-		if (isset($this->params->tinker_code) { 
+		if (isset($this->params->tinker_code)) { 
 		    $phpCode = self::removeComments(base64_decode($this->params->tinker_code));
 		}
 
