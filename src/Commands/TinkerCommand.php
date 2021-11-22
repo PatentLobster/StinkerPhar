@@ -67,10 +67,55 @@ class TinkerCommand
         return trim($output);
     }
 
-    public function execute() {
-        if (isset($this->params->tinker_from)) {
-            $phpCode = file_get_contents($this->params->tinker_from);
+    public function removeComments(string $code): string
+    {
+        $tokens = collect(token_get_all("<?php\n".$code.'?>'));
+
+        return $tokens->reduce(function ($carry, $token) {
+            if (is_string($token)) {
+                return $carry.$token;
+            }
+
+            $text = $this->ignoreCommentsAndPhpTags($token);
+
+            return $carry.$text;
+        }, '');
+    }
+
+    protected function ignoreCommentsAndPhpTags(array $token)
+    {
+        [$id, $text] = $token;
+
+        if ($id === T_COMMENT) {
+            return '';
         }
+        if ($id === T_DOC_COMMENT) {
+            return '';
+        }
+        if ($id === T_OPEN_TAG) {
+            return '';
+        }
+        if ($id === T_CLOSE_TAG) {
+            return '';
+        }
+
+        return $text;
+    }
+
+
+    public function execute() {
+
+
+        if (isset($this->params->tinker_from)) {
+            $phpCode = self::removeComments(file_get_contents($this->params->tinker_from));
+            if (isset($this->params->sideload)) {
+                $phpCode = $this->params->sideload . "\n" . $phpCode;
+            }
+		}
+
+		if (isset($this->params->tinker_code) { 
+		    $phpCode = self::removeComments(base64_decode($this->params->tinker_code));
+		}
 
         $this->shell->addInput($phpCode);
         $closure = new CustomExecutionLoopClosure($this->shell);
