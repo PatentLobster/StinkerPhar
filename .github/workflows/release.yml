@@ -1,0 +1,37 @@
+name: Releases
+
+on: 
+  push:
+    tags:
+    - '*'
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch: 
+jobs:
+
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Box Packager for Phar
+        uses: gplanchat/github-action-box@master
+        env:
+          BOX_SECRET_KEY: ${{secrets.BOX_SECRET_KEY}}
+          BOX_SECRET_KEY_PASSPHRASE: ${{secrets.BOX_SECRET_KEY_PASSPHRASE}} 
+          # If the commit is tagged with a version (e.g. "v1.0.0"),
+          # release the app after building
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}  
+      - name: Save artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: phar
+          path: Stinker.phar
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "Stinker.phar"
+          token: ${{ secrets.GITHUB_TOKEN }}
