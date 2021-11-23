@@ -8,6 +8,7 @@ in your .profile
 
 ```bash
 export STINKER=$(pwd to index.php / Stinker.phar)
+export STINKER_PROJECT=$(pwd to Laravel app)
 ```
 
 in your .vimrc
@@ -17,7 +18,7 @@ function! s:Art()
 	let b64 = system('base64', bufnr())
 	botright new
 	setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap	
-	execute "$read !php $STINKER /Users/itzik/Repos/lplayground tinker --tinker_code=".b64
+	execute "$read !php $STINKER $STINKER_PROJECT tinker --tinker_code=".b64
 	setlocal nomodifiable
 	1
 endfunction
