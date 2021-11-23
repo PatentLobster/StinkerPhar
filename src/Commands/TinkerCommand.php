@@ -68,16 +68,15 @@ class TinkerCommand
     }
 
     public function removeComments(string $code): string
-    {
-        $tokens = collect(token_get_all("<?php\n".$code.'?>'));
-
+	{
+		$code = str_replace(["<?\n","<?php\n"],	'', $code);
+		$tokens = collect(token_get_all("<?php ".$code."?>"));
         return $tokens->reduce(function ($carry, $token) {
             if (is_string($token)) {
                 return $carry.$token;
             }
 
             $text = $this->ignoreCommentsAndPhpTags($token);
-
             return $carry.$text;
         }, '');
     }
@@ -98,7 +97,6 @@ class TinkerCommand
         if ($id === T_CLOSE_TAG) {
             return '';
         }
-
         return $text;
     }
 
@@ -114,7 +112,7 @@ class TinkerCommand
 		}
 
 		if (isset($this->params->tinker_code)) { 
-		    $phpCode = self::removeComments(base64_decode($this->params->tinker_code));
+		    $phpCode = self::removeComments(base64_decode(str_replace(PHP_EOL, "",$this->params->tinker_code)));
 		}
 
         $this->shell->addInput($phpCode);
