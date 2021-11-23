@@ -2,6 +2,6 @@
 {
   "files": ["index.php"],
   "main": "index.php",
-  "output": "example.phar",
+  "output": "Stinker.phar",
   "stub": true
 }
