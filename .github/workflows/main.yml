@@ -29,4 +29,10 @@ jobs:
         uses: gplanchat/github-action-box@master
         env:
           BOX_SECRET_KEY: ${{secrets.BOX_SECRET_KEY}}
-          BOX_SECRET_KEY_PASSPHRASE: ${{secrets.BOX_SECRET_KEY_PASSPHRASE}}
+          BOX_SECRET_KEY_PASSPHRASE: ${{secrets.BOX_SECRET_KEY_PASSPHRASE}} 
+          
+      - name: Save artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: phar
+          path: stinker.phar
