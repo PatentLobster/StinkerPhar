@@ -4,6 +4,7 @@
 namespace PatentLobster\StinkerPhar\Commands;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Laravel\Tinker\ClassAliasAutoloader;
 use Psy\Configuration;
 use Psy\Shell;
@@ -103,7 +104,9 @@ class TinkerCommand
 
     public function execute() {
 
-
+        if (isset($this->params->log_db)) {
+            DB::connection()->enableQueryLog();
+        }
         if (isset($this->params->tinker_from)) {
             $phpCode = self::removeComments(file_get_contents($this->params->tinker_from));
             if (isset($this->params->sideload)) {
@@ -119,6 +122,11 @@ class TinkerCommand
         $closure = new CustomExecutionLoopClosure($this->shell);
         $closure->execute();
         $output = $this->cleanOutput($this->output->fetch());
+        if (isset($this->params->log_db)) {
+            $queries = DB::getQueryLog();
+            return json_encode(['output' => $output, 'queries' => $queries]);
+        }
+
         return $output;
     }
 
