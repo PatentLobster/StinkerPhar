@@ -1,17 +1,31 @@
-# Stinker helper package
+<p align="center" width="100%">
+    <img width="15%" src="https://github.com/PatentLobster/stinker/raw/master/public/icon.png"> 
+</p>
 
-This package is used internally within Stinker.
+<h1 align="center"> Stinker helper package </h1>
 
-But can be used in vim as well:
+<p align="center">This package is used internally within Stinker. </p>
 
-in your .profile
+<p align="center"> But can be used in vim as well: </p>
+
+
+
+<p align="center">in your .profile</p>
+<br/>
+
 
 ```bash
 export STINKER=$(pwd to index.php / Stinker.phar)
 export STINKER_PROJECT=$(pwd to Laravel app)
 ```
 
-in your .vimrc
+
+<br/>
+
+
+<p align="center"> in your .vimrc </p>
+<br/>
+
 
 ```vim
 function! s:Art()
